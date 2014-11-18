@@ -67,15 +67,15 @@ class Board
 
   def move(start, end_pos, color)
     if self[start].nil?
-      raise StandardError.new "No piece at this start position."
+      raise MoveError.new "No piece at this start position."
     end
 
     unless self[start].valid_moves.include?(end_pos)
-      raise StandardError.new "You can't move here!"
+      raise MoveError.new "You can't move here!"
     end
 
     unless self[start].color == color
-      raise StandardError.new "You can't move your opponent's pieces!"
+      raise MoveError.new "You can't move your opponent's pieces!"
     end
 
     make_move(start, end_pos)
@@ -84,12 +84,13 @@ class Board
   end
 
   def move!(start, end_pos)
+    # these seven lines are *almost* dups from move() -- TODO refactor?
     if self[start].nil?
-      raise StandardError.new "No piece at this start position."
+      raise MoveError.new "No piece at this start position."
     end
 
     unless self[start].moves.include?(end_pos)
-      raise StandardError.new "You can't move here!"
+      raise MoveError.new "You can't move here!"
     end
 
     make_move(start, end_pos)
@@ -131,4 +132,7 @@ class Board
       color == :light_blue ? :white : :light_blue
     end
 
+end
+
+class MoveError < StandardError
 end

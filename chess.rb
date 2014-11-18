@@ -8,12 +8,21 @@ class Game
     @turn = :white
   end
 
+  # TODO add variable to check turns -- if you ^C on black's turn, it shouldn't
+  # be white's turn again
+
   def play
     until @game_board.checkmate?(:black) || @game_board.checkmate?(:white)
       @game_board.render
       @white.play_turn
       @game_board.render
       @black.play_turn
+    end
+
+    if @game_board.checkmate?(:black)
+      puts "White wins"
+    else
+      puts "Black wins"
     end
   end
 
@@ -38,7 +47,7 @@ class HumanPlayer
       start, end_pos = parsed_input
       p start
       @game_board.move(start, end_pos, @color)
-    rescue StandardError => e
+    rescue MoveError => e
       puts e
       retry
     end
@@ -46,7 +55,7 @@ class HumanPlayer
 
   def parse_input(input)
     # expects something like e8 c5 -- two notations separated by a space
-    # TODO add error-catching
+    # TODO add error-catching / sanity checks
 
     input.split(' ').map { |str| parse_algebraic_notation(str) }
   end
@@ -64,7 +73,4 @@ class HumanPlayer
     [row_num, col_num]
   end
 
-end
-
-class MoveError < StandardError
 end
