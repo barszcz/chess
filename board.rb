@@ -7,6 +7,8 @@ require_relative 'rook'
 
 class Board
 
+  attr_reader :grid
+
   def [](pos)
     x, y = pos
     @grid[x][y]
@@ -32,6 +34,9 @@ class Board
     @grid[7].each_index { |i| @grid[7][i] = back[i].new([7,i], :white, self) }
   end
 
+  # check it.
+  # should refactor to avoid having magic numbers
+  # this and set_pieces
   def dup
     dup = Board.new(false)
     (0..7).each do |row|
