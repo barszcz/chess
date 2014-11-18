@@ -5,6 +5,8 @@ require_relative 'queen'
 require_relative 'pawn'
 require_relative 'rook'
 
+require 'colorize'
+
 class Board
 
 
@@ -92,14 +94,17 @@ class Board
   end
 
   def render
-    @grid.each do |row|
-      row.each do |cell|
-        print cell.nil? ? ' ' : cell.render
-      end
-      puts ''
-    end
 
-    nil
+    color = :white
+    render = @grid.map do |row|
+      color = flip_color(color)
+      row.map do |cell|
+        color = flip_color(color)
+        cell.nil? ? " ".colorize(background: color) : cell.render.colorize(background:color)
+      end.join("")
+    end.join("\n")
+
+    puts render
   end
 
   def checkmate?(color)
@@ -112,6 +117,10 @@ class Board
     def make_move(start, end_pos)
       self[end_pos], self[start] = self[start], nil
       self[end_pos].pos = end_pos
+    end
+
+    def flip_color(color)
+      color == :light_blue ? :white : :light_blue
     end
 
 end
