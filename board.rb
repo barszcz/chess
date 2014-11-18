@@ -96,12 +96,16 @@ class Board
   def render
 
     color = :white
+    puts " abcdefgh"
+    row_counter = 9
     render = @grid.map do |row|
       color = flip_color(color)
-      row.map do |cell|
+      row_string = row.map do |cell|
         color = flip_color(color)
         cell.nil? ? " ".colorize(background: color) : cell.render.colorize(background:color)
       end.join("")
+      row_counter -= 1
+      [row_counter.to_s, row_string].join
     end.join("\n")
 
     puts render
