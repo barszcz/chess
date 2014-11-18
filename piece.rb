@@ -1,6 +1,8 @@
 class Piece
 
   attr_reader :color
+  attr_accessor :pos
+
 
   def inspect
     {

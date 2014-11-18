@@ -52,4 +52,24 @@ class Board
     dup
   end
 
+  def in_check?(color)
+    king = @grid.flatten.find { |piece| piece.is_a?(King) && piece.color == color }
+    @grid.flatten.any? do |piece|
+      piece.moves.include?(king.pos)
+    end
+  end
+
+  def move(start, end_pos)
+    if self[start].nil?
+      raise ArgumentError.new "No piece at this start position."
+    end
+
+    unless self[start].moves.include?(end_pos)
+      raise ArgumentError.new "You can't move here!"
+    end
+
+    self[end_pos], self[start] = self[start], nil
+    self[end_pos].pos = end_pos
+  end
+
 end
