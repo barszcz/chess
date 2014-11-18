@@ -10,4 +10,9 @@ class Queen < SlidingPiece
       [1, -1],
       [1,  1]]
   end
+
+  def render
+    # @color == :white ? '♕' : '♛'
+    @color == :white ? 'Q' : 'q'
+  end
 end

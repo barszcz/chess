@@ -30,12 +30,18 @@ class Piece
   end
 
   def valid_moves
-
+    moves.reject do |test_move|
+      move_into_check?(test_move)
+    end
   end
 
   def is_on_board?(new_pos)
     #assuming a square board
     new_pos.all? { |c| (0...@board.grid.size).include?(c) }
+  end
+
+  def move_into_check?(test_move)
+    @board.dup.move!(@pos, test_move).in_check?(@color)
   end
 
 end

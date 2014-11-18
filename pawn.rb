@@ -7,6 +7,11 @@ class Pawn < Piece
     super(pos, color, board)
   end
 
+  def render
+    # @color == :white ? '♙' : '♟'
+    @color == :white ? 'P' : 'p'
+  end
+
   def moves
     # will need to remember to set @moved to true in the move logic TODO
     # no need to handle pawn promotion (yet)                        TODO...?

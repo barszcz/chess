@@ -6,4 +6,8 @@ class Bishop < SlidingPiece
      [1, -1],
      [1, 1]]
    end
+
+   def render
+     @color == :white ? 'B' : 'b'
+   end
 end

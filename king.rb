@@ -11,4 +11,9 @@ class King < SteppingPiece
      [1, 0],
      [1, 1]]
    end
+
+   def render
+    #  @color == :white ? '♔' : '♚'
+    @color == :white ? 'K' : 'k'
+   end
 end

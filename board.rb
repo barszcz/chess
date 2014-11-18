@@ -40,26 +40,42 @@ class Board
   # should refactor to avoid having magic numbers
   # this and set_pieces
   def dup
-    dup = Board.new(false)
+    duplicate = Board.new(false)
     (0..7).each do |row|
       (0..7).each do |col|
         piece = self[[row,col]]
         if piece
-          dup[[row,col]] = piece.class.new([row,col], piece.color, dup)
+          duplicate[[row,col]] = piece.class.new([row,col], piece.color, duplicate)
         end
       end
     end
-    dup
+    duplicate
   end
 
   def in_check?(color)
     king = @grid.flatten.find { |piece| piece.is_a?(King) && piece.color == color }
     @grid.flatten.any? do |piece|
-      piece.moves.include?(king.pos)
+      next if piece.nil?
+      piece.moves.include?(king.pos) && piece.color != color
     end
   end
 
   def move(start, end_pos)
+    if self[start].nil?
+      raise ArgumentError.new "No piece at this start position."
+    end
+
+    unless self[start].valid_moves.include?(end_pos)
+      raise ArgumentError.new "You can't move here!"
+    end
+
+    self[end_pos], self[start] = self[start], nil
+    self[end_pos].pos = end_pos
+
+    self  # return self so we can chain stuff after board.dup.move
+  end
+
+  def move!(start, end_pos)
     if self[start].nil?
       raise ArgumentError.new "No piece at this start position."
     end
@@ -70,6 +86,21 @@ class Board
 
     self[end_pos], self[start] = self[start], nil
     self[end_pos].pos = end_pos
+
+    self  # return self so we can chain stuff after board.dup.move
   end
+
+  def render
+    @grid.each do |row|
+      row.each do |cell|
+        print cell.nil? ? ' ' : cell.render
+      end
+      puts ''
+    end
+
+    nil
+  end
+
+  def checkmate?
 
 end
