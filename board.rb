@@ -7,7 +7,6 @@ require_relative 'rook'
 
 class Board
 
-  attr_reader :grid
 
   def pieces(color = nil)
     @grid.flatten.compact.select { |piece| color.nil? ? true : piece.color == color }
@@ -23,6 +22,10 @@ class Board
   def []=(pos, val)
     x, y = pos
     @grid[x][y] = val
+  end
+
+  def size
+    @grid.size
   end
 
   def initialize(start = true)
@@ -44,22 +47,18 @@ class Board
   # should refactor to avoid having magic numbers
   # this and set_pieces
   def dup
-    duplicate = Board.new(false)
-    (0..7).each do |row|
-      (0..7).each do |col|
-        piece = self[[row,col]]
-        if piece
-          duplicate[[row,col]] = piece.class.new([row,col], piece.color, duplicate)
-        end
-      end
+    dup = Board.new(false)
+    self.pieces.each do |piece|
+      pos = piece.pos
+      dup[pos] = piece.class.new(pos, piece.color, dup)
     end
-    duplicate
+  dup
   end
 
   def in_check?(color)
-    king = @grid.flatten.find { |piece| piece.is_a?(King) && piece.color == color }
-    @grid.flatten.any? do |piece|
-      next if piece.nil?
+    king = pieces(color).find { |piece| piece.is_a?(King) }
+
+    pieces.any? do |piece| # TODO add better way of getting opposite color pieces
       piece.moves.include?(king.pos) && piece.color != color
     end
   end
@@ -73,8 +72,7 @@ class Board
       raise ArgumentError.new "You can't move here!"
     end
 
-    self[end_pos], self[start] = self[start], nil
-    self[end_pos].pos = end_pos
+    make_move(start, end_pos)
 
     self  # return self so we can chain stuff after board.dup.move
   end
@@ -88,8 +86,7 @@ class Board
       raise ArgumentError.new "You can't move here!"
     end
 
-    self[end_pos], self[start] = self[start], nil
-    self[end_pos].pos = end_pos
+    make_move(start, end_pos)
 
     self  # return self so we can chain stuff after board.dup.move
   end
@@ -109,5 +106,12 @@ class Board
     in_check?(color) &&
     pieces(color).all? { |piece| piece.valid_moves.empty? }
   end
+
+  private
+
+    def make_move(start, end_pos)
+      self[end_pos], self[start] = self[start], nil
+      self[end_pos].pos = end_pos
+    end
 
 end

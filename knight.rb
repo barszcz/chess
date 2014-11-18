@@ -12,6 +12,6 @@ class Knight < SteppingPiece
   end
 
   def render
-    @color == :white ? 'N' : 'n'
+    @color == :white ? '♘' : '♞'
   end
 end

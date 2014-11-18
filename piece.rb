@@ -37,7 +37,7 @@ class Piece
 
   def is_on_board?(new_pos)
     #assuming a square board
-    new_pos.all? { |c| (0...@board.grid.size).include?(c) }
+    new_pos.all? { |c| (0...@board.size).include?(c) }
   end
 
   def move_into_check?(test_move)

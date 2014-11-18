@@ -1,15 +1,14 @@
 require_relative 'piece'
 
 class Pawn < Piece
-  def initialize(pos, color, board, moved = false)
-    @moved = moved
+
+  def initialize(pos, color, board)
     @direction = color == :black ? 1 : -1
     super(pos, color, board)
   end
 
   def render
-    # @color == :white ? '♙' : '♟'
-    @color == :white ? 'P' : 'p'
+    @color == :white ? '♙' : '♟'
   end
 
   def moves
@@ -22,8 +21,15 @@ class Pawn < Piece
       moves << one_forward
     end
 
+    # this is kind of a hack but it works given standard chess rules
     two_forward = [@pos[0] + @direction * 2, @pos[1]]
-    if !(@moved) && moves.size == 1 # kludge. also don't need to check if on board
+    if color == :black
+      not_moved = pos[0] == 1
+    elsif color == :white
+      not_moved = pos[0] == 6
+    end
+
+    if not_moved && moves.size == 1 # kludge. also don't need to check if on board
       moves << two_forward if piece_at_position(two_forward).nil?
     end
 

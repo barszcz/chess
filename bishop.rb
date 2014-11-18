@@ -8,6 +8,6 @@ class Bishop < SlidingPiece
    end
 
    def render
-     @color == :white ? 'B' : 'b'
+     @color == :white ? "♗" : "♝"
    end
 end

@@ -5,10 +5,9 @@ class Rook < SlidingPiece
     [1, 0],
     [0, -1],
     [0, 1]]
- end
+  end
 
- def render
-  #  @color == :white ? "♖" : "♜"
-  @color == :white ? 'R' : 'r'
- end
+  def render
+   @color == :white ? "♖" : "♜"
+  end
 end

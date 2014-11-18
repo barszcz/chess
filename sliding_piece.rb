@@ -1,4 +1,5 @@
 require_relative 'piece'
+
 class SlidingPiece < Piece
 
   # local variables inherited from Piece are:
