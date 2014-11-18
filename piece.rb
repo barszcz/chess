@@ -1,5 +1,18 @@
 class Piece
 
+  attr_reader :color
+
+  def inspect
+    {
+      type: self.class,
+      pos: @pos,
+      color: @color
+    }.inspect
+
+  end
+
+
+
   def initialize(pos, color, board)
     @pos = pos
     @color = color
