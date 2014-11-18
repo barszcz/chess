@@ -9,6 +9,10 @@ class Board
 
   attr_reader :grid
 
+  def pieces(color = nil)
+    @grid.flatten.compact.select { |piece| color.nil? ? true : piece.color == color }
+  end
+
   def [](pos)
     x, y = pos
     # p x
@@ -101,6 +105,9 @@ class Board
     nil
   end
 
-  def checkmate?
+  def checkmate?(color)
+    in_check?(color) &&
+    pieces(color).all? { |piece| piece.valid_moves.empty? }
+  end
 
 end
