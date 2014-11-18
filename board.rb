@@ -65,13 +65,17 @@ class Board
     end
   end
 
-  def move(start, end_pos)
+  def move(start, end_pos, color)
     if self[start].nil?
-      raise ArgumentError.new "No piece at this start position."
+      raise StandardError.new "No piece at this start position."
     end
 
     unless self[start].valid_moves.include?(end_pos)
-      raise ArgumentError.new "You can't move here!"
+      raise StandardError.new "You can't move here!"
+    end
+
+    unless self[start].color == color
+      raise StandardError.new "You can't move your opponent's pieces!"
     end
 
     make_move(start, end_pos)
@@ -81,11 +85,11 @@ class Board
 
   def move!(start, end_pos)
     if self[start].nil?
-      raise ArgumentError.new "No piece at this start position."
+      raise StandardError.new "No piece at this start position."
     end
 
     unless self[start].moves.include?(end_pos)
-      raise ArgumentError.new "You can't move here!"
+      raise StandardError.new "You can't move here!"
     end
 
     make_move(start, end_pos)

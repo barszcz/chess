@@ -10,7 +10,7 @@
 - Each subclass will need #deltas.
 
 ####The pawn
-TODO
+ TODO
 
 ##Methods of Piece:
 - is_on_board? checks if a move is on the board

@@ -37,11 +37,11 @@ class HumanPlayer
       p parsed_input
       start, end_pos = parsed_input
       p start
-        if @game_board[start].color == @color
-        @game_board.move(start, end_pos)
-      else
-        raise "You can't move your opponent's pieces!"
-      end
+      @game_board.move(start, end_pos, @color)
+    rescue StandardError => e
+      puts e
+      retry
+    end
   end
 
   def parse_input(input)
@@ -64,4 +64,7 @@ class HumanPlayer
     [row_num, col_num]
   end
 
+end
+
+class MoveError < StandardError
 end
