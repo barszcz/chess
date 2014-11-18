@@ -11,6 +11,8 @@ class Board
 
   def [](pos)
     x, y = pos
+    # p x
+    # p y
     @grid[x][y]
   end
 

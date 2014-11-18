@@ -19,6 +19,14 @@ class Piece
     @board = board
   end
 
+  def piece_at_position(pos)  # will return the color as a symbol, or nil
+    if @board[pos].nil?
+      return nil
+    else
+      return @board[pos].color
+    end
+  end
+
   def valid_moves
 
   end
