@@ -42,7 +42,6 @@ class Board
     @grid[7].each_index { |i| @grid[7][i] = back[i].new([7,i], :white, self) }
   end
 
-
   def dup
     dup = Board.new(false)
     self.pieces.each do |piece|
@@ -55,8 +54,8 @@ class Board
   def in_check?(color)
     king = pieces(color).find { |piece| piece.is_a?(King) }
 
-    pieces.any? do |piece| # TODO add better way of getting opposite color pieces
-      piece.moves.include?(king.pos) && piece.color != color # is this logic used anywhere else? (pawn class?)
+    pieces.any? do |piece|
+      piece.moves.include?(king.pos) && piece.enemy?(color)
     end
   end
 
@@ -75,15 +74,13 @@ class Board
 
     move!(start, end_pos)
 
-    self  # return self so we can chain stuff after board.dup.move
+    self
   end
 
   def move!(start, end_pos)
-    # these seven lines are *almost* dups from move() -- TODO refactor?
     self[end_pos], self[start] = self[start], nil
     self[end_pos].update_pos(end_pos)
-    # call Piece#move method here
-    self  # return self so we can chain stuff after board.dup.move
+    self  # return self so we can chain stuff after board.dup.move!
   end
 
   def checkmate?(color)
