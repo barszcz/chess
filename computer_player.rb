@@ -1,5 +1,7 @@
 require_relative 'player.rb'
 
+# TODO stalemate
+
 class ComputerPlayer < Player
 
   PIECE_VALUES = {
@@ -23,6 +25,10 @@ class ComputerPlayer < Player
     moves.reject! { |piece, mvs| mvs.nil? || mvs.empty? }
 
     capturing_moves = find_captures(@game_board, moves)
+
+    unless promotable_pawns.empty?
+      promotable_pawns.first.promote(Queen)
+    end
 
     if capturing_moves.empty?
       moves = moves.to_a
