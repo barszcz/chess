@@ -19,7 +19,6 @@ class Piece
 
   def valid_moves
     moves.reject do |test_move|
-      p test_move
       move_into_check?(test_move)
     end
   end
