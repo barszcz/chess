@@ -5,7 +5,7 @@ require_relative 'player.rb'
 class ComputerPlayer < Player
 
   PIECE_VALUES = {
-    King => 10, # if you can either check or take the queen, check
+    King => 1024,
     Queen => 9,
     Rook => 5,
     Bishop => 3,
@@ -25,25 +25,50 @@ class ComputerPlayer < Player
     moves.reject! { |piece, mvs| mvs.nil? || mvs.empty? }
 
     capturing_moves = find_captures(@game_board, moves)
+    checking_moves = find_checks(@game_board, moves)
 
     unless promotable_pawns.empty?
       promotable_pawns.first.promote(Queen)
     end
 
-    if capturing_moves.empty?
-      moves = moves.to_a
-      start_piece = moves.sample
-      start = start_piece[0]
-      end_pos = start_piece[1].sample
-    else
+    # make a first guess to overwrite later
+    moves = moves.to_a
+    start_piece = moves.sample
+    start = start_piece[0]
+    end_pos = start_piece[1].sample
+
+    # look for capturing moves
+    unless capturing_moves.empty?
       start = capturing_moves[0][0]
       end_pos = capturing_moves[0][1]
     end
+
+    # look for checks
+    unless checking_moves.empty?
+      start = checking_moves[0][0]
+      end_pos = checking_moves[0][1]
+    end
+
+    # look for checkmates
 
     @game_board.move(start, end_pos, @color)
   end
 
   private
+
+    def find_checks(board, moves)
+      # make this a proc or something?
+      checking_moves = []
+      moves.each do |start, moves_arr|
+        moves_arr.each do |end_pos|
+          new_board = board.dup.move!(start, end_pos)
+          opp_color = @color == :white ? :black : :white
+          checking_moves << [start, end_pos] if new_board.in_check?(opp_color)
+        end
+      end
+      checking_moves
+
+    end
 
     def find_captures(board, moves)
       capturing_moves = []
@@ -63,7 +88,7 @@ class ComputerPlayer < Player
         end
       end
 
-      capturing_moves.sort!
+      capturing_moves.sort! # this is wrong. it sorts by position, not by value
     end
 
     def board_value(board)
