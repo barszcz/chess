@@ -55,6 +55,20 @@ class HumanPlayer < Player
       puts e
       retry
     end
+    unless promotable_pawns.empty?
+      begin
+        allowed_promotions = %w(Knight Queen Rook Bishop)
+        puts "You get to promote a pawn! What do you want to promote to?"
+        promotion = gets.chomp.capitalize
+        unless allowed_promotions.include?(promotion)
+          raise MoveError.new "Choose a valid piece type."
+        end
+        promotable_pawns.first.promote(Object.const_get(promotion))
+      rescue MoveError => e
+        puts e
+        retry
+      end
+    end
   end
 
   def parse_input(input)
