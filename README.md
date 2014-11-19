@@ -38,3 +38,22 @@ will raise some exceptions under the conditions given
 
 will call the piece's move method
   dup
+
+##Player
+
+###HumanPlayer
+
+###ComputerPlayer
+- Generate a tree of all moves up to a certain depth. Assume opponent does the same.
+  - Recursive depth-first search.
+- Once you reach the base case, return a score.
+  - How will the score be calculated?
+  - Can use conventional piece values to calculate utility of captures.
+  - Assign a large value to check.
+  - Fractional values for control of the center?
+  - On checkmate, return an arbitrarily large value to ensure you do that.
+  - White takes a positive value; black takes a negative value.
+- For other cases than the base, process the scores returned by previous cases.
+  - How will this work?
+- Can optimize by pruning obviously bad moves.
+  - If you can be checkmated, don't search that branch anymore.
