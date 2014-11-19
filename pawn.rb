@@ -12,12 +12,11 @@ class Pawn < Piece
   end
 
   def moves
-    # will need to remember to set @moved to true in the move logic TODO
     # no need to handle pawn promotion (yet)                        TODO...?
 
     moves = []
     one_forward = [@pos[0] + @direction, @pos[1]]
-    if is_on_board?(one_forward) && piece_at_position(one_forward).nil?
+    if is_on_board?(one_forward) && @board[one_forward].nil? # TODO this should call the board
       moves << one_forward
     end
 
@@ -30,7 +29,7 @@ class Pawn < Piece
     end
 
     if not_moved && moves.size == 1 # kludge. also don't need to check if on board
-      moves << two_forward if piece_at_position(two_forward).nil?
+      moves << two_forward unless @board[two_forward]
     end
 
     captures = [[@pos[0] + @direction, @pos[1] - 1],
@@ -38,8 +37,8 @@ class Pawn < Piece
 
     captures.select! do |capture|
       is_on_board?(capture) &&
-      piece_at_position(capture) &&
-      piece_at_position(capture) != @color
+      @board[capture] &&                                   # TODO
+      @board[capture].color != @color                            # write a method to replace piece_at_position(pos) && piece_at_position(pos) != color
     end
 
     moves.concat(captures)

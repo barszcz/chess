@@ -1,5 +1,6 @@
 require_relative 'board.rb'
 require_relative 'computer_player.rb'
+require_relative 'player.rb'
 
 class Game
   def initialize
@@ -15,9 +16,13 @@ class Game
   def play
     until @game_board.checkmate?(:black) || @game_board.checkmate?(:white)
       @game_board.render
-      @white.play_turn
-      @game_board.render
-      @black.play_turn
+      if @turn == :white
+        @white.play_turn
+        @turn = :black
+      else
+        @black.play_turn
+        @turn = :white
+      end
     end
 
     if @game_board.checkmate?(:black)
@@ -30,14 +35,14 @@ class Game
 end
 
 
-class HumanPlayer
+class HumanPlayer < Player
 
-  attr_reader :color
-
-  def initialize(color, game_board)
-    @color = color
-    @game_board = game_board
-  end
+  # attr_reader :color
+  #
+  # def initialize(color, game_board)
+  #   @color = color
+  #   @game_board = game_board
+  # end
 
   def play_turn
     begin
@@ -64,19 +69,15 @@ class HumanPlayer
     # TODO add error-catching
     col_string, row_string = str.split('')
 
-    col_num = col_string.ord - 97 # TODO refactor with hash?
-                                  # this should be between 0 and 7 (board size)
-
-    row_num = 8 - (row_string.to_i)
-
-    unless col_string.between?('a','h') && row_string.between?('1','8') &&
+    unless col_string.between?('a','h') && row_string.between?('1','8') &&    # do we really need the betweens here? probably not
             col_string.length == 1 && row_string.length == 1
       raise MoveError.new "Invalid move string"
     end
 
-    unless row_num.between?(0, 7) && col_num.between?(0, 7)
-      raise MoveError.new "Move coordinates are outside board size"
-    end
+    col_num = col_string.ord - 97 # TODO refactor with hash?
+                                  # this should be between 0 and 7 (board size)
+
+    row_num = 8 - (Integer(row_string))
 
     [row_num, col_num]
   end
