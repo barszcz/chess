@@ -15,7 +15,8 @@ class Game
   # be white's turn again
 
   def play
-    until @game_board.checkmate?(:black) || @game_board.checkmate?(:white)
+    until @game_board.checkmate?(:black) || @game_board.checkmate?(:white) ||
+      @game_board.pieces.size == 2
       @game_board.render
       if @turn == :white
         @white.play_turn
@@ -28,8 +29,10 @@ class Game
 
     if @game_board.checkmate?(:black)
       puts "White wins"
-    else
+    elsif @game_board.checkmate?(:white)
       puts "Black wins"
+    else
+      puts "Draw"
     end
   end
 
