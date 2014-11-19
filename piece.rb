@@ -10,23 +10,12 @@ class Piece
       pos: @pos,
       color: @color
     }.inspect
-
   end
-
-
 
   def initialize(pos, color, board)
     @pos = pos
     @color = color
     @board = board
-  end
-
-  def piece_at_position(pos)  # will return the color as a symbol, or nil
-    if @board[pos].nil?
-      return nil
-    else
-      return @board[pos].color
-    end
   end
 
   def valid_moves
@@ -35,7 +24,7 @@ class Piece
     end
   end
 
-  def is_on_board?(new_pos)
+  def is_on_board?(new_pos)   # TODO move to board
     #assuming a square board
     new_pos.all? { |c| (0...@board.size).include?(c) }
   end

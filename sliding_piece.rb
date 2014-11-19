@@ -15,10 +15,10 @@ class SlidingPiece < Piece
        while is_on_board?([row + delta[0], col + delta[1]])
          row += delta[0]
          col += delta[1]
-         new_pos_color = piece_at_position([row, col])
-         break if new_pos_color && new_pos_color == @color
+         new_pos = @board[[row, col]]  # this should call the board's bracket method TODO
+         break if new_pos && new_pos.color == @color
          moves << [row, col]
-         break if new_pos_color # and it's of the opponent's color
+         break if new_pos # and it's of the opponent's color (implicit)
        end
     end
     moves

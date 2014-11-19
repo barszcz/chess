@@ -13,6 +13,5 @@ class Queen < SlidingPiece
 
   def render
     @color == :white ? '♕' : '♛'
-
   end
 end

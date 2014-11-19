@@ -16,8 +16,6 @@ class Board
 
   def [](pos)
     x, y = pos
-    # p x
-    # p y
     @grid[x][y]
   end
 
@@ -45,25 +43,29 @@ class Board
     @grid[7].each_index { |i| @grid[7][i] = back[i].new([7,i], :white, self) }
   end
 
-  # check it.
-  # should refactor to avoid having magic numbers
-  # this and set_pieces
+
   def dup
     dup = Board.new(false)
     self.pieces.each do |piece|
-      pos = piece.pos
+      pos = piece.pos.dup
       dup[pos] = piece.class.new(pos, piece.color, dup)
     end
-  dup
+    dup
+  end
+
+  def enemy?(pos, color)
+    self[pos] && self[pos].color != color
   end
 
   def in_check?(color)
     king = pieces(color).find { |piece| piece.is_a?(King) }
 
     pieces.any? do |piece| # TODO add better way of getting opposite color pieces
-      piece.moves.include?(king.pos) && piece.color != color
+      piece.moves.include?(king.pos) && piece.color != color # is this logic used anywhere else? (pawn class?)
     end
   end
+
+
 
   def move(start, end_pos, color)
     if self[start].nil?
@@ -78,31 +80,23 @@ class Board
       raise MoveError.new "You can't move your opponent's pieces!"
     end
 
-    make_move(start, end_pos)
+    move!(start, end_pos)
 
     self  # return self so we can chain stuff after board.dup.move
   end
 
   def move!(start, end_pos)
     # these seven lines are *almost* dups from move() -- TODO refactor?
-    if self[start].nil?
-      raise MoveError.new "No piece at this start position."
-    end
-
-    unless self[start].moves.include?(end_pos)
-      raise MoveError.new "You can't move here!"
-    end
-
-    make_move(start, end_pos)
-
+    self[end_pos], self[start] = self[start], nil
+    self[end_pos].pos = end_pos
     self  # return self so we can chain stuff after board.dup.move
   end
 
   def render
-
-    color = :white
+    color = :light_white
     puts " abcdefgh"
     row_counter = 9
+
     render = @grid.map do |row|
       color = flip_color(color)
       row_string = row.map do |cell|
@@ -123,13 +117,8 @@ class Board
 
   private
 
-    def make_move(start, end_pos)
-      self[end_pos], self[start] = self[start], nil
-      self[end_pos].pos = end_pos
-    end
-
     def flip_color(color)
-      color == :light_blue ? :white : :light_blue
+      color == :white ? :light_white : :white
     end
 
 end
