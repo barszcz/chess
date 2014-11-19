@@ -37,8 +37,8 @@ class Pawn < Piece
 
     captures.select! do |capture|
       is_on_board?(capture) &&
-      @board[capture] &&                                   # TODO
-      @board[capture].color != @color                            # write a method to replace piece_at_position(pos) && piece_at_position(pos) != color
+      @board[capture] &&
+      @board[capture].enemy?(@color) 
     end
 
     moves.concat(captures)

@@ -33,4 +33,8 @@ class Piece
     @board.dup.move!(@pos, test_move).in_check?(@color)
   end
 
+  def enemy?(test_color)
+    @color != test_color
+  end
+
 end
