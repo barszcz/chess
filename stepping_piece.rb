@@ -6,7 +6,7 @@ class SteppingPiece < Piece
           .select do |new_pos|
             is_on_board?(new_pos) &&
             (@board[new_pos].nil? ||   # TODO this should also call the board
-             @board[new_pos].color != @color)# This logic might appear somewhere else. Come back later
+             @board[new_pos].enemy?(@color))# This logic might appear somewhere else. Come back later
           end
   end
 end

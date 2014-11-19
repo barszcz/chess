@@ -43,7 +43,6 @@ class Board
     @grid[7].each_index { |i| @grid[7][i] = back[i].new([7,i], :white, self) }
   end
 
-
   def dup
     dup = Board.new(false)
     self.pieces.each do |piece|
@@ -53,10 +52,6 @@ class Board
     dup
   end
 
-  def enemy?(pos, color)
-    self[pos] && self[pos].color != color
-  end
-
   def in_check?(color)
     king = pieces(color).find { |piece| piece.is_a?(King) }
 
@@ -64,8 +59,6 @@ class Board
       piece.moves.include?(king.pos) && piece.color != color # is this logic used anywhere else? (pawn class?)
     end
   end
-
-
 
   def move(start, end_pos, color)
     if self[start].nil?
