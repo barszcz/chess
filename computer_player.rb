@@ -17,7 +17,6 @@ class ComputerPlayer < Player
     moves = Hash.new([])
 
     pieces.each do |piece|
-      p piece
       moves[piece.pos] = piece.valid_moves
     end
 

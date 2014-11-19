@@ -6,7 +6,7 @@ require_relative 'player.rb'
 class Game
   def initialize
     @game_board = Board.new
-    @black, @white = HumanPlayer.new(:black, @game_board),
+    @black, @white = ComputerPlayer.new(:black, @game_board),
                      ComputerPlayer.new(:white, @game_board)
     @turn = :white
   end
