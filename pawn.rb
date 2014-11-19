@@ -2,9 +2,9 @@ require_relative 'piece'
 
 class Pawn < Piece
 
-  def initialize(pos, color, board)
+  def initialize(pos, color, board, moved = false)
     @direction = color == :black ? 1 : -1
-    super(pos, color, board)
+    super(pos, color, board, moved)
   end
 
   def render

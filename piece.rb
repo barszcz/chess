@@ -10,15 +10,16 @@ class Piece
     }.inspect
   end
 
-  def initialize(pos, color, board)
+  def initialize(pos, color, board, moved = false)
     @pos = pos
     @color = color
     @board = board
-    @moved = false
+    @moved = moved
   end
 
   def valid_moves
     moves.reject do |test_move|
+      p test_move
       move_into_check?(test_move)
     end
   end
