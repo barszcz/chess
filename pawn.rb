@@ -38,11 +38,20 @@ class Pawn < Piece
     captures.select! do |capture|
       is_on_board?(capture) &&
       @board[capture] &&
-      @board[capture].enemy?(@color) 
+      @board[capture].enemy?(@color)
     end
 
     moves.concat(captures)
 
     moves
+  end
+
+  def can_promote?
+    (@color == :black && @pos[0] == 7) ||
+    (@color == :white && @pos[0] == 0)
+  end
+
+  def promote(new_piece)
+    @board[@pos] = new_piece.new(@pos, @color, @board)
   end
 end

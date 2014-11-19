@@ -5,4 +5,8 @@ class Player
     @color = color
     @game_board = game_board
   end
+
+  def promotable_pawns
+    @game_board.pieces(@color).select(&:can_promote?)
+  end
 end

@@ -37,4 +37,8 @@ class Piece
     @color != test_color
   end
 
+  def can_promote? #overridden in Pawn; returns false for anything else
+    false
+  end
+
 end
