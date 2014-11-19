@@ -70,6 +70,15 @@ class HumanPlayer
 
     row_num = 8 - (row_string.to_i)
 
+    unless col_string.between?('a','h') && row_string.between?('1','8') &&
+            col_string.length == 1 && row_string.length == 1
+      raise MoveError.new "Invalid move string"
+    end
+
+    unless row_num.between?(0, 7) && col_num.between?(0, 7)
+      raise MoveError.new "Move coordinates are outside board size"
+    end
+
     [row_num, col_num]
   end
 
