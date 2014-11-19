@@ -43,9 +43,7 @@ class HumanPlayer
       puts "#{@color}: enter input"
       input = gets.chomp
       parsed_input = parse_input(input)
-      p parsed_input
       start, end_pos = parsed_input
-      p start
       @game_board.move(start, end_pos, @color)
     rescue MoveError => e
       puts e
