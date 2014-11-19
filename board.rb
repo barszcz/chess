@@ -9,7 +9,6 @@ require 'colorize'
 
 class Board
 
-
   def pieces(color = nil)
     @grid.flatten.compact.select { |piece| color.nil? ? true : piece.color == color }
   end
@@ -42,6 +41,7 @@ class Board
     @grid[0].each_index { |i| @grid[0][i] = back[i].new([0,i], :black, self) }
     @grid[7].each_index { |i| @grid[7][i] = back[i].new([7,i], :white, self) }
   end
+
 
   def dup
     dup = Board.new(false)
@@ -81,8 +81,14 @@ class Board
   def move!(start, end_pos)
     # these seven lines are *almost* dups from move() -- TODO refactor?
     self[end_pos], self[start] = self[start], nil
-    self[end_pos].pos = end_pos
+    self[end_pos].update_pos(end_pos)
+    # call Piece#move method here
     self  # return self so we can chain stuff after board.dup.move
+  end
+
+  def checkmate?(color)
+    in_check?(color) &&
+    pieces(color).all? { |piece| piece.valid_moves.empty? }
   end
 
   def render
@@ -101,11 +107,6 @@ class Board
     end.join("\n")
 
     puts render
-  end
-
-  def checkmate?(color)
-    in_check?(color) &&
-    pieces(color).all? { |piece| piece.valid_moves.empty? }
   end
 
   private

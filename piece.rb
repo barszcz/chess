@@ -1,8 +1,6 @@
 class Piece
 
-  attr_reader :color
-  attr_accessor :pos
-
+  attr_reader :color, :moved, :pos
 
   def inspect
     {
@@ -16,12 +14,18 @@ class Piece
     @pos = pos
     @color = color
     @board = board
+    @moved = false
   end
 
   def valid_moves
     moves.reject do |test_move|
       move_into_check?(test_move)
     end
+  end
+
+  def update_pos(new_pos)
+    @pos = new_pos
+    @moved = true
   end
 
   def is_on_board?(new_pos)   # TODO move to board
