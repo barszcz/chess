@@ -12,7 +12,6 @@ class Pawn < Piece
   end
 
   def moves
-
     moves = []
     one_forward = [@pos[0] + @direction, @pos[1]]
     if is_on_board?(one_forward) && @board[one_forward].nil? # TODO this should call the board
