@@ -7,7 +7,7 @@ class Game
   def initialize
     @game_board = Board.new
     @black, @white = HumanPlayer.new(:black, @game_board),
-                     HumanPlayer.new(:white, @game_board)
+                     ComputerPlayer.new(:white, @game_board)
     @turn = :white
   end
 

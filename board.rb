@@ -46,7 +46,7 @@ class Board
     dup = Board.new(false)
     self.pieces.each do |piece|
       pos = piece.pos.dup
-      dup[pos] = piece.class.new(pos, piece.color, dup)
+      dup[pos] = piece.class.new(pos, piece.color, dup, piece.moved)
     end
     dup
   end
@@ -60,19 +60,33 @@ class Board
   end
 
   def move(start, end_pos, color)
-    if self[start].nil?
+    piece = self[start]
+
+    if piece.nil?
       raise MoveError.new "No piece at this start position."
     end
 
-    unless self[start].valid_moves.include?(end_pos)
+    unless piece.valid_moves.include?(end_pos)
       raise MoveError.new "You can't move here!"
     end
 
-    unless self[start].color == color
+    unless piece.color == color
       raise MoveError.new "You can't move your opponent's pieces!"
     end
 
+    # Castling
+    if piece.is_a?(King)
+      if end_pos[1] - start[1] == 2 #kingside
+        move!([start[0], 7],[start[0], 5])
+      elsif end_pos[1] - start[1] == -2 #queenside
+        move!([start[0], 0],[start[0], 3])
+      end
+    end
     move!(start, end_pos)
+
+    # castling logic goes here
+
+
 
     self
   end

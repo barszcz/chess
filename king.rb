@@ -20,6 +20,7 @@ class King < SteppingPiece
      valid_moves = super
      valid_moves << [rank, 6] if can_castle_kingside?
      valid_moves << [rank, 2] if can_castle_queenside?
+     valid_moves
    end
 
   # private
