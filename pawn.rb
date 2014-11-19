@@ -12,7 +12,6 @@ class Pawn < Piece
   end
 
   def moves
-    # no need to handle pawn promotion (yet)                        TODO...?
 
     moves = []
     one_forward = [@pos[0] + @direction, @pos[1]]
@@ -22,13 +21,9 @@ class Pawn < Piece
 
     # this is kind of a hack but it works given standard chess rules
     two_forward = [@pos[0] + @direction * 2, @pos[1]]
-    if color == :black
-      not_moved = pos[0] == 1
-    elsif color == :white
-      not_moved = pos[0] == 6
-    end
 
-    if not_moved && moves.size == 1 # kludge. also don't need to check if on board
+
+    if !(@moved) && moves.size == 1 # kludge. also don't need to check if on board
       moves << two_forward unless @board[two_forward]
     end
 
